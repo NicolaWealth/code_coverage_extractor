@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-export const extractCoverage = (coverageData: any, outputFile: any) => {
+export const extractCoverage = (coverageData: any, outputFile: any, log = console.log, fileSystem: any = fs) => {
   let totalStatements = 0;
   let coveredStatements = 0;
   let coveragePercentage = 0;
@@ -11,7 +11,6 @@ export const extractCoverage = (coverageData: any, outputFile: any) => {
     if(!statementMap) continue;
     totalStatements += Object.keys(statementMap).length;
     coveredStatements += (Object.values(statementMap) as number[]).filter((value) => value > 0).length;
-
   }
 
   if (totalStatements > 0) {
@@ -27,10 +26,8 @@ export const extractCoverage = (coverageData: any, outputFile: any) => {
           'red'
   };
 
-  fs.writeFileSync(outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
+  fileSystem.writeFileSync(outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
 
-  console.log(coveragePercentage);
+  // Console log is used in the GitHub Actions environment to obtain the coveragePercentage value as an environment variable
+  log(coveragePercentage);
 }
-
-
-

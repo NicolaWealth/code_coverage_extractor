@@ -1,7 +1,7 @@
 ![Tests Passing](https://github.com/NicolaWealth/code_coverage_extractor/actions/workflows/auto_test_main_badge.yml/badge.svg)
 
 # Introduction
-The `Code Coverage Extractor` provides functionality to extract statement coverage for a given file(s) and output the data in a `Shields.io` dyanmic endpoint badge format. 
+The `Code Coverage Extractor` provides functionality to extract statement coverage for a given file(s) and output the data in a `Shields.io` dynamic endpoint badge format. 
 
 # Installation
 This package should be installed via npm. You must have npm installed first. The following can be run on the commandline to install the `Code Coverage Extractor` package with npm:
