@@ -7,9 +7,21 @@ describe("extract coverage tests", () => {
   let consoleLogStub: sinon.SinonStub;
   const outputFile = 'resources/test_badge.json';
 
-  const fileSystemStub = {
-    writeFileSync: sinon.stub()
-  };
+  // Create a stub to override the writeFileSync function of a fileSystem
+  const writeFileSync: sinon.SinonStub = sinon.stub();
+
+  // Create a proxy which can override the specific function fileSystem when it's called
+  const fsProxy = new Proxy(fs as { [key: string]: any; [key: symbol]: any }, {
+    get(target, prop) {
+      if (prop === 'writeFileSync') {
+        return writeFileSync;
+      }
+      return target[prop];
+    }
+  });
+
+  // Use the proxy with to create a fileSystemStub object with the type of fileSystem but with the proxy override method
+  const fileSystemStub = fsProxy as typeof fs & { writeFileSync: sinon.SinonStub };
 
   beforeEach(function() {
     consoleLogStub = sinon.stub();
