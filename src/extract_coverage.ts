@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-export const extractCoverage = (coverageData: any, outputFile: any, log = console.log, fileSystem: typeof fs = fs) => {
+export const extractCoverage = (coverageData: ReturnType<typeof JSON.parse>, outputFile: fs.PathOrFileDescriptor, log: typeof console.log = console.log, fileSystem: typeof fs = fs) => {
   let totalStatements = 0;
   let coveredStatements = 0;
   let coveragePercentage = 0;

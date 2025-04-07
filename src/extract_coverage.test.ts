@@ -20,21 +20,18 @@ describe("extract coverage tests", () => {
     }
   });
 
-  // Use the proxy with to create a fileSystemStub object with the type of fileSystem but with the proxy override method
-  const fileSystemStub = fsProxy as typeof fs & { writeFileSync: sinon.SinonStub };
-
   beforeEach(function() {
     consoleLogStub = sinon.stub();
   });
 
   afterEach(function() {
     consoleLogStub.reset();
-    fileSystemStub.writeFileSync.reset();
+    fsProxy.writeFileSync.reset();
   });
 
   it("less than 50% coverage", async () => {
     // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/failing_coverage.json', 'utf-8')), outputFile, consoleLogStub, fileSystemStub);
+    extractCoverage(JSON.parse(fs.readFileSync('./resources/failing_coverage.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
 
     // Assert the console logged coverage value is correct
     assert(consoleLogStub.calledOnce);
@@ -48,12 +45,12 @@ describe("extract coverage tests", () => {
     };
 
     // Assert expected badge data was passed
-    sinon.assert.calledOnceWithExactly(fileSystemStub.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
+    sinon.assert.calledOnceWithExactly(fsProxy.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
   });
 
   it("between 50% and 69% coverage", async () => {
     // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/passing_coverage.json', 'utf-8')), outputFile, consoleLogStub, fileSystemStub);
+    extractCoverage(JSON.parse(fs.readFileSync('./resources/passing_coverage.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
 
     // Assert the console logged coverage value is correct
     assert(consoleLogStub.calledOnce);
@@ -67,12 +64,12 @@ describe("extract coverage tests", () => {
     };
 
     // Assert expected badge data was passed
-    sinon.assert.calledOnceWithExactly(fileSystemStub.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
+    sinon.assert.calledOnceWithExactly(fsProxy.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
   });
 
   it("between 70% and 89% coverage", async () => {
     // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/high_coverage.json', 'utf-8')), outputFile, consoleLogStub, fileSystemStub);
+    extractCoverage(JSON.parse(fs.readFileSync('./resources/high_coverage.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
 
     // Assert the console logged coverage value is correct
     assert(consoleLogStub.calledOnce);
@@ -86,12 +83,12 @@ describe("extract coverage tests", () => {
     };
 
     // Assert expected badge data was passed
-    sinon.assert.calledOnceWithExactly(fileSystemStub.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
+    sinon.assert.calledOnceWithExactly(fsProxy.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
   });
 
   it("greater than 89% coverage", async () => {
     // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/full_coverage.json', 'utf-8')), outputFile, consoleLogStub, fileSystemStub);
+    extractCoverage(JSON.parse(fs.readFileSync('./resources/full_coverage.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
 
     // Assert the console logged coverage value is correct
     assert(consoleLogStub.calledOnce);
@@ -105,12 +102,12 @@ describe("extract coverage tests", () => {
     };
 
     // Assert expected badge data was passed
-    sinon.assert.calledOnceWithExactly(fileSystemStub.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
+    sinon.assert.calledOnceWithExactly(fsProxy.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
   });
 
   it("no statement map", async () => {
     // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/no_statementmap.json', 'utf-8')), outputFile, consoleLogStub, fileSystemStub);
+    extractCoverage(JSON.parse(fs.readFileSync('./resources/no_statementmap.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
 
     // Assert the console logged coverage value is correct
     assert(consoleLogStub.calledOnce);
@@ -124,6 +121,6 @@ describe("extract coverage tests", () => {
     };
 
     // Assert expected badge data was passed
-    sinon.assert.calledOnceWithExactly(fileSystemStub.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
+    sinon.assert.calledOnceWithExactly(fsProxy.writeFileSync, outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
   });
 });
