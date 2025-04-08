@@ -4,7 +4,6 @@ import assert from "assert";
 import sinon from "sinon";
 
 describe("extract coverage tests", () => {
-  let consoleLogStub: sinon.SinonStub;
   const outputFile = 'resources/test_badge.json';
 
   // Create a stub to override the writeFileSync function of a fileSystem
@@ -20,22 +19,13 @@ describe("extract coverage tests", () => {
     }
   });
 
-  beforeEach(function() {
-    consoleLogStub = sinon.stub();
-  });
-
   afterEach(function() {
-    consoleLogStub.reset();
     fsProxy.writeFileSync.reset();
   });
 
   it("less than 50% coverage", async () => {
-    // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/failing_coverage.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
-
-    // Assert the console logged coverage value is correct
-    assert(consoleLogStub.calledOnce);
-    assert(consoleLogStub.calledWith(0));
+    // Read fake coverage output, update badge data and ensure returned value is correct
+    assert.strictEqual(extractCoverage(JSON.parse(fs.readFileSync('./resources/failing_coverage.json', 'utf-8')), outputFile, fsProxy as typeof fs), 0);
 
     // Expected badge data passed through stub call
     const badgeData = {
@@ -49,12 +39,8 @@ describe("extract coverage tests", () => {
   });
 
   it("between 50% and 69% coverage", async () => {
-    // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/passing_coverage.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
-
-    // Assert the console logged coverage value is correct
-    assert(consoleLogStub.calledOnce);
-    assert(consoleLogStub.calledWith(60));
+    // Read fake coverage output, update badge data and ensure returned value is correct
+    assert.strictEqual(extractCoverage(JSON.parse(fs.readFileSync('./resources/passing_coverage.json', 'utf-8')), outputFile, fsProxy as typeof fs),60);
 
     // Expected badge data passed through stub call
     const badgeData = {
@@ -68,12 +54,8 @@ describe("extract coverage tests", () => {
   });
 
   it("between 70% and 89% coverage", async () => {
-    // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/high_coverage.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
-
-    // Assert the console logged coverage value is correct
-    assert(consoleLogStub.calledOnce);
-    assert(consoleLogStub.calledWith(80));
+    // Read fake coverage output, update badge data and ensure returned value is correct
+    assert.strictEqual(extractCoverage(JSON.parse(fs.readFileSync('./resources/high_coverage.json', 'utf-8')), outputFile, fsProxy as typeof fs), 80);
 
     // Expected badge data passed through stub call
     const badgeData = {
@@ -87,12 +69,8 @@ describe("extract coverage tests", () => {
   });
 
   it("greater than 89% coverage", async () => {
-    // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/full_coverage.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
-
-    // Assert the console logged coverage value is correct
-    assert(consoleLogStub.calledOnce);
-    assert(consoleLogStub.calledWith(100));
+    // Read fake coverage output, update badge data and ensure returned value is correct
+    assert.strictEqual(extractCoverage(JSON.parse(fs.readFileSync('./resources/full_coverage.json', 'utf-8')), outputFile, fsProxy as typeof fs), 100);
 
     // Expected badge data passed through stub call
     const badgeData = {
@@ -106,12 +84,8 @@ describe("extract coverage tests", () => {
   });
 
   it("no statement map", async () => {
-    // Read fake coverage output and update badge data
-    extractCoverage(JSON.parse(fs.readFileSync('./resources/no_statementmap.json', 'utf-8')), outputFile, consoleLogStub, fsProxy as typeof fs);
-
-    // Assert the console logged coverage value is correct
-    assert(consoleLogStub.calledOnce);
-    assert(consoleLogStub.calledWith(0));
+    // Read fake coverage output, update badge data and ensure returned value is correct
+    assert.strictEqual(extractCoverage(JSON.parse(fs.readFileSync('./resources/no_statementmap.json', 'utf-8')), outputFile, fsProxy as typeof fs), 0);
 
     // Expected badge data passed through stub call
     const badgeData = {

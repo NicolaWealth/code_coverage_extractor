@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-export const extractCoverage = (coverageData: ReturnType<typeof JSON.parse>, outputFile: fs.PathOrFileDescriptor, log: typeof console.log = console.log, fileSystem: typeof fs = fs) => {
+export const extractCoverage = (coverageData: ReturnType<typeof JSON.parse>, outputFile: fs.PathOrFileDescriptor, fileSystem: typeof fs = fs): number => {
   let totalStatements = 0;
   let coveredStatements = 0;
   let coveragePercentage = 0;
@@ -28,6 +28,5 @@ export const extractCoverage = (coverageData: ReturnType<typeof JSON.parse>, out
 
   fileSystem.writeFileSync(outputFile, JSON.stringify(badgeData, null, 2), 'utf-8');
 
-  // Console log is used in the GitHub Actions environment to obtain the coveragePercentage value as an environment variable
-  log(coveragePercentage);
+  return(coveragePercentage);
 }
